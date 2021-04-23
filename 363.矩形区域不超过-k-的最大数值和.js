@@ -64,6 +64,46 @@ var maxSumSubmatrix = function (matrix, k) {
 
   let max
 
+  for (let l = 0; l < m; l++) {
+    let colSum = []
+
+    for (let r = l; r < m; r++) {
+      for (let i = 0; i < n; i++) {
+        colSum[i] = (colSum[i] || 0) + (matrix[r][i] || 0)
+      }
+
+      // 求出[l,r]包含的所有矩形和
+      for (let j1 = 0; j1 < n; j1++) {
+        let sum = 0
+        for (let j2 = j1; j2 < n; j2++) {
+          sum = sum + (colSum[j2] || 0)
+          if (sum <= k) {
+            if (sum === k) {
+              return sum
+            }
+            if (max === undefined) {
+              max = sum
+            }
+            max = Math.max(max, sum)
+          }
+        }
+      }
+    }
+  }
+
+  if (max !== undefined) {
+    return max
+  } else {
+    return null
+  }
+}
+
+var maxSumSubmatrix2 = function (matrix, k) {
+  const m = matrix.length
+  const n = matrix[0].length
+
+  let max
+
   // 四维数组, 左上角->右下角, 和
   const res = [[[[matrix[0][0]]]]] // res[0][0][0][0] = matrix[0][0]
 
